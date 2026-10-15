@@ -70,21 +70,6 @@
             background: #1d4ed8;
             transform: translateY(-1px);
         }
-        .demo-box {
-            background: #f8fafc;
-            border: 1px dashed #cbd5e1;
-            border-radius: 12px;
-            padding: 1rem;
-            margin-top: 1.5rem;
-            font-size: 0.8rem;
-        }
-        .demo-btn {
-            cursor: pointer;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
     </style>
 </head>
 <body>
@@ -119,12 +104,12 @@
             @csrf
 
             <div class="mb-3">
-                <label for="email" class="form-label small fw-semibold text-secondary">Alamat Email</label>
+                <label for="email" class="form-label small fw-semibold text-secondary">Email atau Username</label>
                 <div class="input-group">
-                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-envelope text-muted"></i></span>
-                    <input type="email" class="form-control border-start-0 @error('email') is-invalid @enderror"
+                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-person text-muted"></i></span>
+                    <input type="text" class="form-control border-start-0 @error('email') is-invalid @enderror"
                            id="email" name="email" value="{{ old('email') }}"
-                           placeholder="nama@company.com" required autofocus>
+                           placeholder="nama@company.com atau admin" required autofocus>
                     @error('email')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -157,39 +142,9 @@
                 <i class="bi bi-box-arrow-in-right me-2"></i>Masuk ke Sistem
             </button>
         </form>
-
-        {{-- DEMO CREDENTIALS QUICK FILL --}}
-        <div class="demo-box">
-            <div class="fw-bold text-secondary mb-2 d-flex align-items-center gap-1">
-                <i class="bi bi-lightning-charge-fill text-warning"></i> Akun Demo Cepat (Klik untuk isi):
-            </div>
-            <div class="d-flex flex-column gap-2">
-                <button type="button" class="btn btn-sm btn-outline-success text-start d-flex justify-content-between align-items-center border-2"
-                        onclick="fillCreds('budi@company.com', 'password')">
-                    <span><strong>⭐ Budi Santoso:</strong> budi@company.com</span>
-                    <span class="badge bg-success">Belum Absen (Siap Tes!)</span>
-                </button>
-                <button type="button" class="btn btn-sm btn-outline-primary text-start d-flex justify-content-between align-items-center"
-                        onclick="fillCreds('admin@company.com', 'password')">
-                    <span><strong>Admin HR:</strong> admin@company.com</span>
-                    <span class="badge bg-primary">Full Access</span>
-                </button>
-                <button type="button" class="btn btn-sm btn-outline-secondary text-start d-flex justify-content-between align-items-center"
-                        onclick="fillCreds('ahmad@company.com', 'password')">
-                    <span><strong>Ahmad Fauzi:</strong> ahmad@company.com</span>
-                    <span class="badge bg-secondary">Karyawan Tetap</span>
-                </button>
-            </div>
-        </div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    function fillCreds(email, password) {
-        document.getElementById('email').value = email;
-        document.getElementById('password').value = password;
-    }
-</script>
 </body>
 </html>

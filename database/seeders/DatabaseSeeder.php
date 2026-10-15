@@ -23,10 +23,20 @@ class DatabaseSeeder extends Seeder
 
         // Akun Admin HR (Full Access)
         User::updateOrCreate(
+            ['email' => 'admin@admin.com'],
+            [
+                'name'        => 'admin',
+                'password'    => bcrypt('admin'),
+                'role'        => 'admin',
+                'karyawan_id' => null,
+            ]
+        );
+
+        User::updateOrCreate(
             ['email' => 'admin@company.com'],
             [
                 'name'        => 'Administrator HR',
-                'password'    => bcrypt('password'),
+                'password'    => bcrypt('admin'),
                 'role'        => 'admin',
                 'karyawan_id' => null,
             ]
@@ -51,6 +61,18 @@ class DatabaseSeeder extends Seeder
                 'password'    => bcrypt('password'),
                 'role'        => 'karyawan',
                 'karyawan_id' => 2,
+            ]
+        );
+
+        // Akun Karyawan Jundan jauhar (Software Engineer)
+        $karyawanJundan = \App\Models\Karyawan::where('nama', 'Jundan jauhar')->first();
+        User::updateOrCreate(
+            ['email' => 'jundan87@gmail.com'],
+            [
+                'name'        => 'Jundan jauhar',
+                'password'    => bcrypt('password'),
+                'role'        => 'karyawan',
+                'karyawan_id' => $karyawanJundan?->id ?? 7,
             ]
         );
 

@@ -102,6 +102,22 @@ class KaryawanSeeder extends Seeder
                 'created_at'    => now(),
                 'updated_at'    => now(),
             ],
+            [
+                'nama'          => 'Jundan jauhar',
+                'alamat'        => 'Jl. Raya No. 1, Jakarta',
+                'tanggal_lahir' => '1998-01-01',
+                'jenis_kelamin' => 'Laki-Laki',
+                'agama'         => 'Islam',
+                'jabatan'       => 'Software Engineer',
+                'gaji'          => 10000000,
+                'status'        => 'Aktif',
+                'struktur_id'   => 1,  // TI > Divisi Pengembangan > Biro Backend
+                'riwayat_karir' => 'Staff IT & Software Engineer',
+                'kontrak_kerja' => null,
+                'dokumen_legal' => null,
+                'created_at'    => now(),
+                'updated_at'    => now(),
+            ],
         ];
 
         // Gunakan DB::table()->insert() agar lebih efisien untuk batch data

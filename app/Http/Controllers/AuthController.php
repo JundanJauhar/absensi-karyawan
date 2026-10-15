@@ -22,18 +22,39 @@ class AuthController extends Controller
     }
 
     /**
-     * Proses autentikasi login
+     * Proses autentikasi login (mendukung email maupun username)
      */
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'email'    => 'required|email',
+        $request->validate([
+            'email'    => 'required|string',
             'password' => 'required|string',
+        ], [
+            'email.required'    => 'Email atau username wajib diisi.',
+            'password.required' => 'Kata sandi wajib diisi.',
         ]);
 
-        $remember = $request->boolean('remember');
+        $loginInput = trim($request->input('email'));
+        $password   = $request->input('password');
+        $remember   = $request->boolean('remember');
 
-        if (Auth::attempt($credentials, $remember)) {
+        $attemptSuccess = false;
+
+        // Cek jika input adalah format email
+        if (filter_var($loginInput, FILTER_VALIDATE_EMAIL)) {
+            $attemptSuccess = Auth::attempt(['email' => $loginInput, 'password' => $password], $remember);
+        } else {
+            // Cek jika input adalah username / nama
+            $attemptSuccess = Auth::attempt(['name' => $loginInput, 'password' => $password], $remember);
+
+            // Jika input 'admin', fallback cek ke email admin@admin.com atau admin@company.com
+            if (!$attemptSuccess && strtolower($loginInput) === 'admin') {
+                $attemptSuccess = Auth::attempt(['email' => 'admin@admin.com', 'password' => $password], $remember)
+                               || Auth::attempt(['email' => 'admin@company.com', 'password' => $password], $remember);
+            }
+        }
+
+        if ($attemptSuccess) {
             $request->session()->regenerate();
 
             $user = Auth::user();
@@ -48,7 +69,7 @@ class AuthController extends Controller
         }
 
         return back()->withInput($request->only('email'))
-                     ->withErrors(['email' => 'Email atau kata sandi yang Anda masukkan tidak cocok.']);
+                     ->withErrors(['email' => 'Email/Username atau kata sandi yang Anda masukkan tidak cocok.']);
     }
 
     /**
