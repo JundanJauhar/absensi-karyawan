@@ -1,0 +1,355 @@
+{
+  "annotations": {"list": []},
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "time": {"from": "now-30d", "to": "now"},
+  "timepicker": {},
+  "panels": [
+
+    {
+      "collapsed": false,
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 0},
+      "id": 100,
+      "title": "📌 RINGKASAN EKSEKUTIF",
+      "type": "row"
+    },
+
+    {
+      "id": 1,
+      "title": "Total Karyawan Aktif",
+      "type": "stat",
+      "gridPos": {"h": 5, "w": 6, "x": 0, "y": 1},
+      "datasource": {"type": "frser-sqlite-datasource", "uid": "PA062F1DCA2D55876"},
+      "targets": [{
+        "datasource": {"type": "frser-sqlite-datasource", "uid": "PA062F1DCA2D55876"},
+        "queryText": "SELECT CAST(strftime('%s', 'now') as INTEGER) as time, COUNT(*) as total FROM karyawan WHERE status = 'Aktif';",
+        "rawQueryText": "SELECT CAST(strftime('%s', 'now') as INTEGER) as time, COUNT(*) as total FROM karyawan WHERE status = 'Aktif';",
+        "timeColumns": ["time"], "queryType": "table", "refId": "A"
+      }],
+      "options": {
+        "reduceOptions": {"values": false, "calcs": ["lastNotNull"], "fields": "total"},
+        "textMode": "value_and_name", "colorMode": "background_solid", "graphMode": "none", "justifyMode": "center", "orientation": "auto"
+      },
+      "fieldConfig": {
+        "defaults": {"color": {"fixedColor": "#1e40af", "mode": "fixed"}, "displayName": "Personel Terdaftar", "unit": "none"}
+      }
+    },
+
+    {
+      "id": 2,
+      "title": "Kehadiran Hari Ini",
+      "type": "stat",
+      "gridPos": {"h": 5, "w": 6, "x": 6, "y": 1},
+      "datasource": {"type": "frser-sqlite-datasource", "uid": "PA062F1DCA2D55876"},
+      "targets": [{
+        "datasource": {"type": "frser-sqlite-datasource", "uid": "PA062F1DCA2D55876"},
+        "queryText": "SELECT CAST(strftime('%s', 'now') as INTEGER) as time, COUNT(*) as total FROM absensi WHERE date(tanggal) = date('now');",
+        "rawQueryText": "SELECT CAST(strftime('%s', 'now') as INTEGER) as time, COUNT(*) as total FROM absensi WHERE date(tanggal) = date('now');",
+        "timeColumns": ["time"], "queryType": "table", "refId": "A"
+      }],
+      "options": {
+        "reduceOptions": {"values": false, "calcs": ["lastNotNull"], "fields": "total"},
+        "textMode": "value_and_name", "colorMode": "background_solid", "graphMode": "none", "justifyMode": "center", "orientation": "auto"
+      },
+      "fieldConfig": {
+        "defaults": {"color": {"fixedColor": "#047857", "mode": "fixed"}, "displayName": "Sudah Clock In", "unit": "none"}
+      }
+    },
+
+    {
+      "id": 3,
+      "title": "Terlambat Hari Ini",
+      "type": "stat",
+      "gridPos": {"h": 5, "w": 6, "x": 12, "y": 1},
+      "datasource": {"type": "frser-sqlite-datasource", "uid": "PA062F1DCA2D55876"},
+      "targets": [{
+        "datasource": {"type": "frser-sqlite-datasource", "uid": "PA062F1DCA2D55876"},
+        "queryText": "SELECT CAST(strftime('%s', 'now') as INTEGER) as time, COUNT(*) as total FROM absensi WHERE date(tanggal) = date('now') AND status_kehadiran = 'Terlambat';",
+        "rawQueryText": "SELECT CAST(strftime('%s', 'now') as INTEGER) as time, COUNT(*) as total FROM absensi WHERE date(tanggal) = date('now') AND status_kehadiran = 'Terlambat';",
+        "timeColumns": ["time"], "queryType": "table", "refId": "A"
+      }],
+      "options": {
+        "reduceOptions": {"values": false, "calcs": ["lastNotNull"], "fields": "total"},
+        "textMode": "value_and_name", "colorMode": "background_solid", "graphMode": "none", "justifyMode": "center", "orientation": "auto"
+      },
+      "fieldConfig": {
+        "defaults": {"color": {"fixedColor": "#b45309", "mode": "fixed"}, "displayName": "Perlu Review HR", "unit": "none"}
+      }
+    },
+
+    {
+      "id": 4,
+      "title": "Total Denda Sanksi",
+      "type": "stat",
+      "gridPos": {"h": 5, "w": 6, "x": 18, "y": 1},
+      "datasource": {"type": "frser-sqlite-datasource", "uid": "PA062F1DCA2D55876"},
+      "targets": [{
+        "datasource": {"type": "frser-sqlite-datasource", "uid": "PA062F1DCA2D55876"},
+        "queryText": "SELECT CAST(strftime('%s', 'now') as INTEGER) as time, COALESCE(SUM(nominal_denda), 0) as total FROM absensi WHERE kena_denda = 1;",
+        "rawQueryText": "SELECT CAST(strftime('%s', 'now') as INTEGER) as time, COALESCE(SUM(nominal_denda), 0) as total FROM absensi WHERE kena_denda = 1;",
+        "timeColumns": ["time"], "queryType": "table", "refId": "A"
+      }],
+      "options": {
+        "reduceOptions": {"values": false, "calcs": ["lastNotNull"], "fields": "total"},
+        "textMode": "value_and_name", "colorMode": "background_solid", "graphMode": "none", "justifyMode": "center", "orientation": "auto"
+      },
+      "fieldConfig": {
+        "defaults": {"color": {"fixedColor": "#b91c1c", "mode": "fixed"}, "displayName": "Akumulasi Denda", "unit": "currencyIDR"}
+      }
+    },
+
+    {
+      "collapsed": false,
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 6},
+      "id": 101,
+      "title": "🎯 KEDISIPLINAN & DISTRIBUSI DEPARTEMEN",
+      "type": "row"
+    },
+
+    {
+      "id": 5,
+      "title": "Tingkat Kedisiplinan Hari Ini",
+      "type": "gauge",
+      "gridPos": {"h": 9, "w": 8, "x": 0, "y": 7},
+      "datasource": {"type": "frser-sqlite-datasource", "uid": "PA062F1DCA2D55876"},
+      "targets": [{
+        "datasource": {"type": "frser-sqlite-datasource", "uid": "PA062F1DCA2D55876"},
+        "queryText": "SELECT CAST(strftime('%s', 'now') as INTEGER) as time, ROUND((SUM(CASE WHEN status_kehadiran = 'Hadir' THEN 1.0 ELSE 0.0 END) / COUNT(*)) * 100, 1) as persentase FROM absensi WHERE date(tanggal) = date('now');",
+        "rawQueryText": "SELECT CAST(strftime('%s', 'now') as INTEGER) as time, ROUND((SUM(CASE WHEN status_kehadiran = 'Hadir' THEN 1.0 ELSE 0.0 END) / COUNT(*)) * 100, 1) as persentase FROM absensi WHERE date(tanggal) = date('now');",
+        "timeColumns": ["time"], "queryType": "table", "refId": "A"
+      }],
+      "options": {
+        "showThresholdLabels": false, "showThresholdMarkers": true,
+        "reduceOptions": {"values": false, "calcs": ["lastNotNull"], "fields": "persentase"}
+      },
+      "fieldConfig": {
+        "defaults": {
+          "min": 0, "max": 100, "unit": "percent",
+          "thresholds": {"mode": "absolute", "steps": [
+            {"color": "#ef4444", "value": null},
+            {"color": "#f59e0b", "value": 60},
+            {"color": "#10b981", "value": 80}
+          ]}
+        }
+      }
+    },
+
+    {
+      "id": 6,
+      "title": "Sebaran Personel per Departemen",
+      "type": "bargauge",
+      "gridPos": {"h": 9, "w": 16, "x": 8, "y": 7},
+      "datasource": {"type": "frser-sqlite-datasource", "uid": "PA062F1DCA2D55876"},
+      "targets": [{
+        "datasource": {"type": "frser-sqlite-datasource", "uid": "PA062F1DCA2D55876"},
+        "queryText": "SELECT s.nama_department as departemen, COUNT(k.id) as total FROM karyawan k LEFT JOIN struktur s ON k.struktur_id = s.id GROUP BY s.nama_department ORDER BY total DESC;",
+        "rawQueryText": "SELECT s.nama_department as departemen, COUNT(k.id) as total FROM karyawan k LEFT JOIN struktur s ON k.struktur_id = s.id GROUP BY s.nama_department ORDER BY total DESC;",
+        "queryType": "table", "refId": "A"
+      }],
+      "options": {
+        "displayMode": "gradient", "orientation": "horizontal", "showUnfilled": true,
+        "reduceOptions": {"values": true, "fields": "/total/"}
+      },
+      "fieldConfig": {
+        "defaults": {
+          "min": 0, "max": 15, "unit": "none",
+          "thresholds": {"mode": "absolute", "steps": [
+            {"color": "#06b6d4", "value": null},
+            {"color": "#3b82f6", "value": 5},
+            {"color": "#8b5cf6", "value": 10}
+          ]}
+        }
+      }
+    },
+
+    {
+      "collapsed": false,
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 16},
+      "id": 102,
+      "title": "📈 TREN KEHADIRAN HARIAN",
+      "type": "row"
+    },
+
+    {
+      "id": 7,
+      "title": "Grafik Absensi Harian — Tepat Waktu vs Terlambat",
+      "type": "barchart",
+      "gridPos": {"h": 10, "w": 24, "x": 0, "y": 17},
+      "datasource": {"type": "frser-sqlite-datasource", "uid": "PA062F1DCA2D55876"},
+      "targets": [{
+        "datasource": {"type": "frser-sqlite-datasource", "uid": "PA062F1DCA2D55876"},
+        "queryText": "SELECT date(tanggal) as hari, SUM(CASE WHEN status_kehadiran = 'Hadir' THEN 1 ELSE 0 END) as tepat_waktu, SUM(CASE WHEN status_kehadiran = 'Terlambat' THEN 1 ELSE 0 END) as terlambat FROM absensi GROUP BY date(tanggal) ORDER BY date(tanggal) ASC;",
+        "rawQueryText": "SELECT date(tanggal) as hari, SUM(CASE WHEN status_kehadiran = 'Hadir' THEN 1 ELSE 0 END) as tepat_waktu, SUM(CASE WHEN status_kehadiran = 'Terlambat' THEN 1 ELSE 0 END) as terlambat FROM absensi GROUP BY date(tanggal) ORDER BY date(tanggal) ASC;",
+        "queryType": "table", "refId": "A"
+      }],
+      "options": {
+        "orientation": "auto", "stacking": "normal", "showValue": "always",
+        "barWidth": 0.6, "barRadius": 0.3, "groupWidth": 0.75,
+        "xField": "hari",
+        "legend": {"displayMode": "list", "placement": "bottom"}
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": [
+          {"matcher": {"id": "byName", "options": "tepat_waktu"}, "properties": [
+            {"id": "displayName", "value": "✅ Tepat Waktu (<= 07:30)"},
+            {"id": "color", "value": {"fixedColor": "#10b981", "mode": "fixed"}}
+          ]},
+          {"matcher": {"id": "byName", "options": "terlambat"}, "properties": [
+            {"id": "displayName", "value": "⚠️ Terlambat (> 07:30)"},
+            {"id": "color", "value": {"fixedColor": "#f43f5e", "mode": "fixed"}}
+          ]}
+        ]
+      }
+    },
+
+    {
+      "collapsed": false,
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 27},
+      "id": 103,
+      "title": "📊 KOMPOSISI KONTRAK & POLA KETERLAMBATAN",
+      "type": "row"
+    },
+
+    {
+      "id": 8,
+      "title": "Komposisi Ikatan Kerja",
+      "type": "piechart",
+      "gridPos": {"h": 9, "w": 12, "x": 0, "y": 28},
+      "datasource": {"type": "frser-sqlite-datasource", "uid": "PA062F1DCA2D55876"},
+      "targets": [{
+        "datasource": {"type": "frser-sqlite-datasource", "uid": "PA062F1DCA2D55876"},
+        "queryText": "SELECT COALESCE(tipe_kontrak, 'Lainnya') as ikatan_kerja, COUNT(*) as jumlah FROM karyawan GROUP BY tipe_kontrak;",
+        "rawQueryText": "SELECT COALESCE(tipe_kontrak, 'Lainnya') as ikatan_kerja, COUNT(*) as jumlah FROM karyawan GROUP BY tipe_kontrak;",
+        "queryType": "table", "refId": "A"
+      }],
+      "options": {
+        "pieType": "donut",
+        "reduceOptions": {"values": true, "fields": "/jumlah/"},
+        "displayLabels": ["name", "percent"],
+        "legend": {"displayMode": "table", "placement": "right", "values": ["value", "percent"]}
+      },
+      "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}}}
+    },
+
+    {
+      "id": 9,
+      "title": "Status Approval Keterlambatan",
+      "type": "piechart",
+      "gridPos": {"h": 9, "w": 12, "x": 12, "y": 28},
+      "datasource": {"type": "frser-sqlite-datasource", "uid": "PA062F1DCA2D55876"},
+      "targets": [{
+        "datasource": {"type": "frser-sqlite-datasource", "uid": "PA062F1DCA2D55876"},
+        "queryText": "SELECT status_approval_masuk as status, COUNT(*) as jumlah FROM absensi GROUP BY status_approval_masuk;",
+        "rawQueryText": "SELECT status_approval_masuk as status, COUNT(*) as jumlah FROM absensi GROUP BY status_approval_masuk;",
+        "queryType": "table", "refId": "A"
+      }],
+      "options": {
+        "pieType": "donut",
+        "reduceOptions": {"values": true, "fields": "/jumlah/"},
+        "displayLabels": ["name", "percent"],
+        "legend": {"displayMode": "table", "placement": "right", "values": ["value", "percent"]}
+      },
+      "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}}}
+    },
+
+    {
+      "collapsed": false,
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 37},
+      "id": 104,
+      "title": "⚠️ MONITORING JATUH TEMPO KONTRAK",
+      "type": "row"
+    },
+
+    {
+      "id": 10,
+      "title": "Peringatan Kontrak Mendekati Habis Masa (PKWT & Outsourcing)",
+      "type": "table",
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 38},
+      "datasource": {"type": "frser-sqlite-datasource", "uid": "PA062F1DCA2D55876"},
+      "targets": [{
+        "datasource": {"type": "frser-sqlite-datasource", "uid": "PA062F1DCA2D55876"},
+        "queryText": "SELECT nama as Nama, jabatan as Jabatan, tipe_kontrak as 'Ikatan Kerja', COALESCE(nama_vendor, '-') as 'Vendor/PT', date(tanggal_selesai_kontrak) as 'Habis Kontrak', CAST(julianday(tanggal_selesai_kontrak) - julianday('now') AS INTEGER) as 'Sisa Hari' FROM karyawan WHERE tanggal_selesai_kontrak IS NOT NULL ORDER BY tanggal_selesai_kontrak ASC;",
+        "rawQueryText": "SELECT nama as Nama, jabatan as Jabatan, tipe_kontrak as 'Ikatan Kerja', COALESCE(nama_vendor, '-') as 'Vendor/PT', date(tanggal_selesai_kontrak) as 'Habis Kontrak', CAST(julianday(tanggal_selesai_kontrak) - julianday('now') AS INTEGER) as 'Sisa Hari' FROM karyawan WHERE tanggal_selesai_kontrak IS NOT NULL ORDER BY tanggal_selesai_kontrak ASC;",
+        "queryType": "table", "refId": "A"
+      }],
+      "options": {"showHeader": true, "cellHeight": "sm"},
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": [
+          {"matcher": {"id": "byName", "options": "Sisa Hari"}, "properties": [
+            {"id": "custom.cellOptions", "value": {"type": "color-background", "mode": "gradient"}},
+            {"id": "thresholds", "value": {"mode": "absolute", "steps": [
+              {"color": "#dc2626", "value": null}, {"color": "#f59e0b", "value": 15}, {"color": "#10b981", "value": 30}
+            ]}},
+            {"id": "unit", "value": "d"}
+          ]},
+          {"matcher": {"id": "byName", "options": "Ikatan Kerja"}, "properties": [
+            {"id": "custom.cellOptions", "value": {"type": "color-background", "mode": "basic"}},
+            {"id": "mappings", "value": [
+              {"type": "value", "options": {"Outsourcing": {"color": "#7c3aed", "text": "Outsourcing"}}},
+              {"type": "value", "options": {"PKWT": {"color": "#0284c7", "text": "PKWT (Kontrak)"}}}
+            ]}
+          ]}
+        ]
+      }
+    },
+
+    {
+      "collapsed": false,
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 46},
+      "id": 105,
+      "title": "📋 LOG RIWAYAT PRESENSI TERKINI",
+      "type": "row"
+    },
+
+    {
+      "id": 11,
+      "title": "Daftar Riwayat Kehadiran Personel (50 Data Terakhir)",
+      "type": "table",
+      "gridPos": {"h": 10, "w": 24, "x": 0, "y": 47},
+      "datasource": {"type": "frser-sqlite-datasource", "uid": "PA062F1DCA2D55876"},
+      "targets": [{
+        "datasource": {"type": "frser-sqlite-datasource", "uid": "PA062F1DCA2D55876"},
+        "queryText": "SELECT k.nama as Nama, s.nama_department as Departemen, date(a.tanggal) as Tanggal, a.jam_masuk as 'Jam Masuk', COALESCE(a.jam_keluar, 'Belum Pulang') as 'Jam Keluar', a.status_kehadiran as Status, a.status_approval_masuk as 'Approval', CASE WHEN a.kena_denda = 1 THEN 'Dikenakan Sanksi' ELSE 'Bebas Denda' END as 'Denda', a.nominal_denda as 'Nominal' FROM absensi a JOIN karyawan k ON a.karyawan_id = k.id LEFT JOIN struktur s ON k.struktur_id = s.id ORDER BY date(a.tanggal) DESC, a.jam_masuk DESC LIMIT 50;",
+        "rawQueryText": "SELECT k.nama as Nama, s.nama_department as Departemen, date(a.tanggal) as Tanggal, a.jam_masuk as 'Jam Masuk', COALESCE(a.jam_keluar, 'Belum Pulang') as 'Jam Keluar', a.status_kehadiran as Status, a.status_approval_masuk as 'Approval', CASE WHEN a.kena_denda = 1 THEN 'Dikenakan Sanksi' ELSE 'Bebas Denda' END as 'Denda', a.nominal_denda as 'Nominal' FROM absensi a JOIN karyawan k ON a.karyawan_id = k.id LEFT JOIN struktur s ON k.struktur_id = s.id ORDER BY date(a.tanggal) DESC, a.jam_masuk DESC LIMIT 50;",
+        "queryType": "table", "refId": "A"
+      }],
+      "options": {"showHeader": true, "cellHeight": "sm"},
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": [
+          {"matcher": {"id": "byName", "options": "Status"}, "properties": [
+            {"id": "custom.cellOptions", "value": {"type": "color-background", "mode": "basic"}},
+            {"id": "mappings", "value": [
+              {"type": "value", "options": {"Hadir": {"color": "#16a34a", "text": "✅ Hadir"}}},
+              {"type": "value", "options": {"Terlambat": {"color": "#ea580c", "text": "⚠️ Terlambat"}}}
+            ]}
+          ]},
+          {"matcher": {"id": "byName", "options": "Denda"}, "properties": [
+            {"id": "custom.cellOptions", "value": {"type": "color-background", "mode": "basic"}},
+            {"id": "mappings", "value": [
+              {"type": "value", "options": {"Bebas Denda": {"color": "#15803d", "text": "✅ Bebas"}}},
+              {"type": "value", "options": {"Dikenakan Sanksi": {"color": "#b91c1c", "text": "❌ Sanksi"}}}
+            ]}
+          ]},
+          {"matcher": {"id": "byName", "options": "Nominal"}, "properties": [
+            {"id": "unit", "value": "currencyIDR"}
+          ]}
+        ]
+      }
+    }
+
+  ],
+  "refresh": "10s",
+  "schemaVersion": 42,
+  "tags": ["HR", "Absensi", "Enterprise", "Karyawan"],
+  "timezone": "browser",
+  "title": "Dashboard Analitik Presensi & Karyawan",
+  "uid": "emp-hr-absensi-01",
+  "version": 10
+}
